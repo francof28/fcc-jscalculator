@@ -51,11 +51,6 @@ input {
     font-size: larger;
 }
 
-.calc {
-    font-size: smaller;
-    color: rgb(187, 179, 179);
-}
-
 .clear {
     grid-area: clear;
     background-color: #e63946;

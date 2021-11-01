@@ -1,20 +1,11 @@
 import React from 'react';
 import './Calculator.css';
 
-class Calculator extends React.Component {
-    constructor (){
-        super();
-        this.state = {
-            currentNum: '0',
-            prevNum: undefined,
-            operation: undefined,
-            result: '0',
-            calcDisplay: '0',
-        }
-        this.handleClick = this.handleClick.bind(this)
-    }
+function Calculator () {
+    const [expression, setExpression] = React.useState("");
+    const [answer, setAnswer] = React.useState(expression);
 
-    handleClick = (e) => {
+    /*
         const newVal = e.target.value
         
         switch (newVal) {
@@ -113,40 +104,87 @@ class Calculator extends React.Component {
                 }
             }
 
-        }
-    }
+        }*/
 
-    display = (e) => {
+        function display(symbol) {
+            setExpression((prevValue) => {
+              if (
+                /[+*-/]/.test(symbol) &&
+                /[+*-/]/.test(prevValue[prevValue.length - 1])
+              ) {
+                let newValue;
+                if (/[-]/.test(symbol)) {
+                  newValue = prevValue.slice(0, prevValue.length) + symbol;
+                } else {
+                  let count = 0;
+                  for (let i = 0; i < prevValue.length; i++) {
+                    if (isNaN(+prevValue[i])) {
+                      count++;
+                    } else {
+                      count = 0;
+                    }
+                  }
+                  newValue = prevValue.slice(0, prevValue.length - count) + symbol;
+                }
+        
+                setExpression(newValue);
+              } else {
+                if (prevValue) {
+                  prevValue = prevValue + "";
+                  let valArr = prevValue.split(/[+/*-]/g);
+                  console.log("valArr " + JSON.stringify(valArr));
+                  let lastNumber = valArr[valArr.length - 1];
+                  if (!isNaN(lastNumber) && /[.]/.test(lastNumber) && symbol === ".") {
+                    console.log("symbol = empty ");
+                    symbol = "";
+                  }
+                }
+        
+                setExpression(
+                  (prevValue + symbol).replace(/^0/g, "").replace(/\.+/g, ".")
+                );
+              }
+            });
+        
+            setAnswer((prevValue) =>
+              (prevValue + symbol).replace(/^0/g, "").replace(/\.+/g, ".")
+            );
+          }
+        
+          function calculate() {
+            setAnswer(eval(expression));
+            setExpression(eval(expression));
+          }
+          
+          function clear() {
+            setExpression("");
+            setAnswer(0);
+          }
 
-    }
-
-    render () {
-        return (
+    return (
             <div className="calculator">
                 <div className="screen">
-                    <input className="calc" type="text" value={this.state.calcDisplay}/>
-                    <input className="result" type="text" value={this.state.result} id="display"/>
+                    <input className="result" type="text" value={answer} id="display"/>
                 </div>
-                <button className="button clear" onClick={this.handleClick} value={'clear'} id="clear">AC</button>
-                <button className="button div" onClick={this.handleClick} value={'div'} id="divide">/</button>
-                <button className="button mult" onClick={this.handleClick} value={'mult'} id="multiply">x</button>
-                <button className="button seven" onClick={this.handleClick} value={'7'} id="seven">7</button>
-                <button className="button eight" onClick={this.handleClick} value={'8'} id="eight">8</button>
-                <button className="button nine" onClick={this.handleClick} value={'9'} id="nine">9</button>
-                <button className="button rest" onClick={this.handleClick} value={'rest'} id="substract">-</button>
-                <button className="button four" onClick={this.handleClick} value={'4'} id="four">4</button>
-                <button className="button five" onClick={this.handleClick} value={'5'} id="five">5</button>
-                <button className="button six" onClick={this.handleClick} value={'6'} id="six">6</button>
-                <button className="button add" onClick={this.handleClick} value={'add'} id="add">+</button>
-                <button className="button one" onClick={this.handleClick} value={'1'} id="one">1</button>
-                <button className="button two" onClick={this.handleClick} value={'2'} id="two">2</button>
-                <button className="button three" onClick={this.handleClick} value={'3'} id="three">3</button>
-                <button className="button equal" onClick={this.handleClick} value={'equal'} id="equals">=</button>
-                <button className="button zero" onClick={this.handleClick} value={'0'} id="zero">0</button>
-                <button className="button dot" onClick={this.handleClick} value={'dot'} id="decimal">.</button>
+                <button className="button clear" onClick={clear} id="clear">AC</button>
+                <button className="button div" onClick={() => display("/")} id="divide">/</button>
+                <button className="button mult" onClick={() => display("*")} id="multiply">x</button>
+                <button className="button seven" onClick={() => display("7")} id="seven">7</button>
+                <button className="button eight" onClick={() => display("8")} id="eight">8</button>
+                <button className="button nine" onClick={() => display("9")} id="nine">9</button>
+                <button className="button rest" onClick={() => display("-")} id="subtract">-</button>
+                <button className="button four" onClick={() => display("4")} id="four">4</button>
+                <button className="button five" onClick={() => display("5")} id="five">5</button>
+                <button className="button six" onClick={() => display("6")} id="six">6</button>
+                <button className="button add" onClick={() => display("+")} id="add">+</button>
+                <button className="button one" onClick={() => display("1")} id="one">1</button>
+                <button className="button two" onClick={() => display("2")} id="two">2</button>
+                <button className="button three" onClick={() => display("3")} id="three">3</button>
+                <button className="button equal" onClick={calculate} id="equals">=</button>
+                <button className="button zero" onClick={() => display("0")} id="zero">0</button>
+                <button className="button dot" onClick={() => display(".")} id="decimal">.</button>
             </div>
-        )
-    }
+    )
 }
 
 export default Calculator;
