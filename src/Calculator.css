@@ -1,0 +1,92 @@
+.calculator {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+    "screen screen screen screen"
+    "clear clear div mult"
+    "seven eight nine rest"
+    "four five six add"
+    "one two three equal"
+    "zero zero dot equal";
+    width: 400px;
+    background-color: black;
+    padding: 2px;
+    border-radius: 4px;
+}
+
+button {
+    font-size: large;
+    color: white;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: gray;
+    border: 1px solid black;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.screen {
+    grid-area: screen;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+input {
+    background-color: black;
+    color: white;
+    height: 100%;
+    width: 98%;
+    text-align: end;
+    font-family: monospace;
+    font-size: larger;
+}
+
+.calc {
+    font-size: smaller;
+    color: rgb(187, 179, 179);
+}
+
+.clear {
+    grid-area: clear;
+    background-color: #e63946;
+}
+
+.zero {
+    grid-area: zero;
+}
+
+.equal {
+    grid-area: equal;
+    background-color: #1d3557;
+}
+
+.add {
+    background-color: #a8dadc;
+    color: black;
+}
+
+.rest {
+    background-color: #a8dadc;
+    color: black;
+}
+
+.mult {
+    background-color: #a8dadc;
+    color: black;
+}
+
+.div {
+    background-color: #a8dadc;
+    color: black;
+}
+
